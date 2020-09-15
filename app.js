@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const keys = require('./config/keys')
 const connectRoute = require('./routes/connection')
 const pingRoute = require('./routes/pinging')
+const userRoute = require('./routes/users')
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.set('trust proxy',true);
 
 app.use('/api/app', connectRoute)
 app.use('/api/app', pingRoute)
+app.use('/api/app', userRoute)
 
 
 module.exports = app;
