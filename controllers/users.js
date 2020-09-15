@@ -6,7 +6,7 @@ module.exports.getUser = async function (req, res) {
     try {
         const candidate = await User.find({userId: req.body.userId});
         if (candidate) {
-            await res.status(200).json(candidate)
+            await res.status(200).json(candidate[0].deviceHash)
         } else {
             await res.status(200).json({
                 status: false
