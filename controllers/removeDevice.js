@@ -17,7 +17,7 @@ module.exports.removeDevice = async function (req, res) {
                 {deviceHash: req.body.deviceHash},
                 {deviceHash: user[0].deviceHash}
             )
-            await Ping.remove({deviceHash: req.body.deviceHash})
+            await Ping.deleteOne({deviceHash: req.body.deviceHash})
         }
         await res.status(200).json({status})
     } catch (e) {
