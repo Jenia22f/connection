@@ -5,11 +5,21 @@ const errorHandler = require('../utils/errorHandler');
 module.exports.connect = async function (req, res) {
     try {
         let status = false
-        const candidate = await User.find({userId: req.body.userId});
-        if (candidate) {
-            const connect = candidate[0].deviceHash.find(el => el === req.body.deviceHash)
-            if (connect) {
+        const findDevice = await User.find({deviceHash: req.body.deviceHash});
+
+        if (!findDevice.length) {
+
+            const candidate = await User.find({userId: req.body.userId});
+
+            if (candidate.length) {
                 status = true;
+                candidate[0].deviceHash.push(req.body.deviceHash)
+
+                const updateUser = await User.findOneAndUpdate(
+                    {userId: req.body.userId},
+                    {deviceHash: candidate[0].deviceHash}
+                )
+
                 const ping = new Ping({
                     userId: req.body.userId,
                     deviceHash: req.body.deviceHash,
@@ -17,15 +27,11 @@ module.exports.connect = async function (req, res) {
                     duration: ''
                 })
                 await ping.save()
-            } else {
-                status = false;
             }
-        } else {
-            status = false
         }
 
         await res.status(200).json({
-            status,
+            status
         })
     } catch (e) {
         errorHandler(res, e)

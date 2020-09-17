@@ -6,11 +6,10 @@ module.exports.pinging = async function (req, res) {
     let newDuration;
     try {
         const device = await Ping.find({deviceHash: req.body.deviceHash})
-        if (device) {
+        console.log(device)
+        if (device.length) {
         let date = Math.round(Date.now() / 60000)
-        if (device[0].duration) {
-            newDuration = date - device[0].duration;
-        } else {
+
             newDuration = date - device[0].startTime;
         }
             console.log(newDuration);
@@ -23,7 +22,7 @@ module.exports.pinging = async function (req, res) {
                 duration: newDuration
             })
         } else {
-        await res.status(400).json({status: false})
+        await res.status(200).json({status: false})
         }
 
     } catch (e) {

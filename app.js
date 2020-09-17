@@ -7,6 +7,7 @@ const keys = require('./config/keys')
 const connectRoute = require('./routes/connection')
 const pingRoute = require('./routes/pinging')
 const userRoute = require('./routes/users')
+const removeRoute = require('./routes/removeDevice')
 
 const app = express();
 
@@ -24,6 +25,6 @@ app.set('trust proxy',true);
 app.use('/api/app', connectRoute)
 app.use('/api/app', pingRoute)
 app.use('/api/app', userRoute)
-
+app.use('/api/app', removeRoute)
 
 module.exports = app;
